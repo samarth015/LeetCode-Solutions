@@ -1,9 +1,60 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-#include <queue>
-#include <set>
-class Solution {
+class Solution{
+	int n, m;
+
+	bool indexIsValid(int i, int j){
+		return 0 <= i and i < m and 0 <= j and j < n;
+	}
+
+	public:
+    int orangesRotting(vector<vector<int>>& grid) {
+
+		m = grid.size(), n = grid.front().size();
+		int oranges = 0;
+		queue<pair<int,int>> to_rot;
+
+        
+		for(int i = 0; i < m; i++){
+			for(int j = 0; j < n; j++){
+				if(grid[i][j] == 2){
+					to_rot.push({i,j});
+					grid[i][j] = 1;
+					oranges++;
+				}
+				else if(grid[i][j] == 1){
+					oranges++;
+				}
+			}
+		}
+
+        if(oranges == 0) return 0;
+
+		int time = -2;
+		while(not to_rot.empty()){
+			time += 1;
+			int size = to_rot.size();
+			while(size--){
+				auto ij = to_rot.front();
+				to_rot.pop();
+				int i = ij.first, j = ij.second;
+				if(indexIsValid(i,j) and grid[i][j] == 1){
+					grid[i][j] = 2;
+					oranges--;
+					to_rot.push({i+1,j});
+					to_rot.push({i-1,j});
+					to_rot.push({i,j+1});
+					to_rot.push({i,j-1});
+				}
+			}
+		}
+
+		return (oranges == 0 ? time : -1 );
+    }
+};
+
+class Solution2 {
 	public:
 		int orangesRotting(vector<vector<int>>& grid) {
 			auto gridcpy (grid);

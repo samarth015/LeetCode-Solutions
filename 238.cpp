@@ -3,6 +3,35 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+//with division
+class Solution3 {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+		int zeros = 0, zero_position, product = 1;
+		vector<int> result (nums.size(), 0);
+		for(int i = 0; i < nums.size(); i++){
+			if(nums[i]){
+				product *= nums[i];
+			}
+			else{
+				zeros++;
+				if(zeros > 1) return result;
+				else zero_position = i;
+			}
+		}
+		if(zeros == 1){
+			result[zero_position] = product;
+		}
+		else{
+			for(int i = 0; i < nums.size(); i++){
+				result[i] = product / nums[i];
+			}
+		}
+		return result;
+	}
+};
+
+
 //O(n) without extra space
 class Solution {
 public:

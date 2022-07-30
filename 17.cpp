@@ -5,7 +5,10 @@ class Solution {
 	private:
 		std::unordered_map<char, string> mp;
 	public:
-		Solution(): mp { {'2',"abc"}, {'3',"def"}, {'4',"ghi"}, {'5',"jkl"}, {'6',"mno"}, {'7',"pqrs"}, {'8',"tuv"}, {'9',"wxyz" } } {} 
+		Solution(): mp { {'2',"abc"}, {'3',"def"}, {'4',"ghi"}, 
+						 {'5',"jkl"}, {'6',"mno"}, {'7',"pqrs"}, 
+						 {'8',"tuv"}, {'9',"wxyz" } } 
+		{} 
 
 		vector<string> letterCombinations(string digits) {
 			if(digits.empty()) return {};
@@ -33,19 +36,22 @@ class Solution2 {
 			else {
 				auto remaining_combs { letterCombinations(pos + 1) };
 				vector<string> all_combs {};
-				for(auto ch : mp[ (*digits)[pos] ] )
-					for(auto comb : remaining_combs) 
-						all_combs.push_back( ch + string{comb} ); 
+				for(char letter : mp[ (*digits)[pos] ] )
+					for(string comb : remaining_combs) 
+						all_combs.push_back( letter + comb ); 
 				return all_combs;
 			}
 
 		}
 
 	public:
-		Solution2(): mp { {'2',"abc"}, {'3',"def"}, {'4',"ghi"}, {'5',"jkl"}, {'6',"mno"}, {'7',"pqrs"}, {'8',"tuv"}, {'9',"wxyz" } } {} 
+		Solution2(): mp { {'2',"abc"}, {'3',"def"}, {'4',"ghi"}, 
+						 {'5',"jkl"}, {'6',"mno"}, {'7',"pqrs"}, 
+						 {'8',"tuv"}, {'9',"wxyz" } } 
+		{} 
 
 		vector<string> letterCombinations(string digits) {
-			if(digits.empty()) == 0) return {};
+            if(digits.empty()) return {};
 			this->digits = &digits;
 			return letterCombinations(0);
 		}

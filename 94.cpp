@@ -29,3 +29,48 @@ class Solution {
 			return inord;
 		}
 };
+
+class Solution3 {
+	public:
+		vector<int> inorderTraversal(TreeNode* root){
+			if(root == nullptr) return {};
+			vector<int> res;
+			stack<TreeNode*> treestack;
+			TreeNode* curr = root;
+			while( curr or treestack.size() ){
+				while(curr){
+					treestack.push(curr);
+					curr = curr->left;
+				}
+				res.push_back(treestack.top()->val);
+				curr = treestack.top()->right;
+				treestack.pop();
+			}
+		return res;
+		}
+};
+
+class Solution2 {
+	public:
+		vector<int> inorderTraversal(TreeNode* root){
+			if(root == nullptr) return {};
+			vector<int> res;
+			stack<TreeNode*> treestack;
+			treestack.push(root);
+			int prev_size = 0;
+			while( not treestack.empty() ){
+				int size = treestack.size();
+				if(prev_size <= size and treestack.top()->left){
+					treestack.push( treestack.top()->left );
+				}
+				else{
+					TreeNode* top = treestack.top();
+					treestack.pop();
+					res.push_back( top->val );
+					if( top->right ) treestack.push( top->right );
+				}
+				prev_size = size;
+			}
+		return res;
+		}
+};

@@ -7,7 +7,7 @@ public:
 		auto nstr = std::to_string(num);
 		auto pos { nstr.find('6') };
 		if(pos != string::npos) nstr[pos] = '9';
-		return atoi(nstr.c_str());
+		return stoi(nstr);
     }
 };
 

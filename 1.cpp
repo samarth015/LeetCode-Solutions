@@ -1,7 +1,42 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+// Most elegant
 class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+		unordered_map<int, int> imap;
+		int size = nums.size();
+		for(int i = 0; i < size; i++){
+			auto it { imap.find(target - nums[i]) };
+			if(it != imap.end()) return {it->second, i};
+			imap[nums[i]] = i;
+		}
+		return { -1, -1 };
+    }
+};
+
+
+class Solution2 {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+		unordered_map<int, vector<int>> umap;
+		int size = nums.size();
+		for(int i = 0; i < size; i++){
+			umap[ nums[i] ].push_back(i);
+
+			auto it = umap.find(target - nums[i]);
+			if(it != umap.end()){
+				auto& indexes = it->second;
+				for(auto j : indexes) if(i != j) return {i, j};
+			}
+		}
+		return { -1, -1 };
+    }
+};
+
+
+class Solution3 {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
 		unordered_set<int> hashed_nums {nums.begin(), nums.end()};

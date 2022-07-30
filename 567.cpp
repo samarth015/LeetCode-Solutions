@@ -2,40 +2,35 @@
 using namespace std;
 
 class Solution {
-	public:
-		bool checkInclusion(string s1, string s2) {
-			unordered_map<char, int> s1charscount {}, curr_subseq_chars_count{};
-			for(char ch : s1) s1charscount[ch]++;
-			// for(auto [ch, count] : s1charscount) cout << ch << ' ' << count << endl;
-			int curr_subseq_len = 0, first_char_subseq = 0;
+private:
+	vector<int> freqdiff;
+	bool windowIsPermutation(){
+		return all_of(freqdiff.begin(), freqdiff.end(), 
+				[](auto fd){ return fd == 0; });
+	}
 
-			for(int i = 0; i < s2.size(); i++){
-				curr_subseq_chars_count[s2[i]]++;
-				curr_subseq_len++;
+public:
+	Solution(): freqdiff(26,0) {}
 
-				if(s1charscount.find(s2[i]) == s1charscount.end()){
-					curr_subseq_chars_count.clear();
-					curr_subseq_len = 0;
-				}
-				else if(curr_subseq_chars_count[s2[i]] > s1charscount[s1[i]]){
-					while(first_char_subseq != s2[i]){
-						curr_subseq_chars_count[s2[i]]--;
-						first_char_subseq++;
-						curr_subseq_len--;
-					}
-					curr_subseq_chars_count[s2[i]]--;
-					first_char_subseq++;
-					curr_subseq_len--;
-				}
-				else if(curr_subseq_len == s1.size()){
-					return true;
-				}
-			}
+    bool checkInclusion(string s1, string s2) {
+		if(s1.size() > s2.size()) return false;
+		int s1len = s1.size();
 
-			return false;
+		for(int i = 0; i < s1len; i += 1){
+			freqdiff[ s2[i] - 'a' ] += 1;
+			freqdiff[ s1[i] - 'a' ] -= 1;
 		}
+
+		int l = -1, r = s1len;
+		while(r < s2.size() and not windowIsPermutation()){
+			char added = s2[r++] - 'a', removed = s2[++l] - 'a';
+			freqdiff[ added ] += 1;
+			freqdiff[ removed ] -= 1;
+		}
+		return windowIsPermutation();
+    }
 };
 
 int main(){
-	cout << Solution{}.checkInclusion("ab", "eidbaooo");
+	cout << Solution{}.checkInclusion("ab", "eidboaoo");
 }
